@@ -1,81 +1,97 @@
 'use client'
 import { useEffect, useRef } from 'react'
 import { gsap } from 'gsap'
-import { ScrollTrigger } from 'gsap/ScrollTrigger'
 
-gsap.registerPlugin(ScrollTrigger)
-
-export default function HeroSection() {
-  const containerRef = useRef(null)
+export default function HeroSectionChoppy() {
   const textRef      = useRef(null)
-  const imgRef       = useRef(null)
+  const imgLeftRef   = useRef(null)
+  const imgRightRef  = useRef(null)
   const skipRef      = useRef(null)
-  const tlRef        = useRef(null)
+  const containerRef = useRef(null)
 
   useEffect(() => {
+    // block scroll
     document.body.style.overflow = 'hidden'
+
+    // start everything hidden
     containerRef.current.style.visibility = 'hidden'
-
-    // initial set
-    gsap.set(textRef.current, { scale: 0.5, rotation: -10, x: -20 })
-
-    // build timeline
-    const tl = gsap.timeline({ delay: 0.25 })
-    tl.to(textRef.current, { duration: 0, scale: 1,  rotation: 10,  x: 20 }, 0.5)
-      .to(textRef.current, { duration: 0, scale: 1.5, rotation: 0,   x: 0  }, 1)
-    tlRef.current = tl
-
-    // show the rest once timeline completes
-    tl.eventCallback('onComplete', () => {
-      document.body.style.overflow = 'auto'
-      containerRef.current.style.visibility = 'visible'
-      skipRef.current.style.display = 'none'
-      document.removeEventListener('mousedown', onMouseDownSkip)
+    gsap.set([textRef.current, imgLeftRef.current, imgRightRef.current], {
+      autoAlpha: 0
     })
 
-    // hero image fade/scale
-    gsap.from(imgRef.current, {
-      duration: 1.5,
-      opacity: 0,
-      scale: 0.5,
-      ease: 'back.out(1.7)'
+    const tl = gsap.timeline({
+      delay: 0.25,
+      onStart: () => {
+        containerRef.current.style.visibility = 'visible'
+      },
+      onComplete: finishIntro
     })
+
+    // snap-in text in two steps, duration:0 (choppy)
+    tl.to(textRef.current, {
+      duration: 0,    // instant
+      autoAlpha: 1,
+      scale: 1,
+      rotation: 10,
+      x: 20
+    }, 0.5)
+    .to(textRef.current, {
+      duration: 0,    // instant
+      scale: 1.5,
+      rotation: 0,
+      x: 0
+    }, 1)
+
+    // images also snap in instantly
+    tl.to([imgLeftRef.current, imgRightRef.current], {
+      duration: 0,    // instant
+      autoAlpha: 1,
+      scale: 1
+    }, 1)
 
     // skip logic
-    function skipAnimation() {
-      tl.progress(1)
-    }
-    function onMouseDownSkip(e) {
-      if (e.button === 0) skipAnimation()
-    }
-    skipRef.current.addEventListener('click', skipAnimation)
-    document.addEventListener('mousedown', onMouseDownSkip)
+    skipRef.current.addEventListener('click', finishIntro)
+    const onMouseDown = e => e.button === 0 && finishIntro()
+    document.addEventListener('mousedown', onMouseDown)
 
-    // cleanup
+    function finishIntro() {
+      tl.kill()
+      document.body.style.overflow = 'auto'
+      skipRef.current.style.display = 'none'
+      document.removeEventListener('mousedown', onMouseDown)
+    }
+
     return () => {
       document.body.style.overflow = 'auto'
-      skipRef.current.removeEventListener('click', skipAnimation)
-      document.removeEventListener('mousedown', onMouseDownSkip)
+      document.removeEventListener('mousedown', onMouseDown)
       tl.kill()
     }
   }, [])
 
   return (
     <section className="hero">
-      <div id="skip-text" ref={skipRef} className="skip-text">
-        Press LMB to skip
-      </div>
-      <div className="container" ref={containerRef}>
+      <div id="skip-text" ref={skipRef}>Press LMB to skip</div>
+      <div
+        className="container"
+        ref={containerRef}
+        style={{ visibility: 'hidden' }}
+      >
         <div className="hero-content">
+          <img
+            ref={imgLeftRef}
+            src="/images/teto-tetoris.gif"
+            alt="Left GIF"
+            className="hero-img"
+          />
           <div className="hero-text" ref={textRef}>
             <div className="title">RICO</div>
             <div className="subtitle">Front-End Designer</div>
           </div>
           <img
-            ref={imgRef}
+            ref={imgRightRef}
+            src="/images/teto-tetoris.gif"
+            alt="Right GIF"
             className="hero-img"
-            src="https://media.tenor.com/HvJ48-NOlfIAAAAi/teto-tetoris.gif"
-            alt="Hero"
           />
         </div>
       </div>
