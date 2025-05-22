@@ -1,0 +1,75 @@
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 40px 20px;
+  gap: 40px;
+  visibility: hidden;
+}
+.about {
+  background-image: url("https://static.vecteezy.com/system/resources/previews/048/027/196/original/ripped-transparent-paper-texture-png.png");
+  background-size: 100% 100%;
+  background-position: center;
+  background-repeat: no-repeat;
+  text-shadow: 0.5px 0.5px 0px rgba(0, 0, 0, 0.3);
+  padding: 40px;
+  width: 48%;
+  text-align: left;
+}
+
+.about h2 {
+  font-size: 1.8rem;
+  color: #00FFAE;
+}
+.about p {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: #FF1493;
+}
+
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: #fff;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  padding: 20px;
+  margin-top: -60px;
+}
+
+.placeholder img {
+  width: 100%;
+  max-width: 288px;
+  height: auto;
+  border-radius: 6px;
+  margin-bottom: 15px;
+}
+
+.placeholder p {
+  margin-top: 10px;
+  font-size: 1rem;
+  color: #000;
+  font-family: 'Comic Neue', cursive, sans-serif;
+}
+
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    padding: 20px;
+  }
+  .about{
+    width: 90%;
+    margin: 20px auto;
+  }
+  .about h2 {
+    font-size: 1.62rem;
+  }
+  .about p, .placeholder p {
+    font-size: 0.81rem;
+  }
+}

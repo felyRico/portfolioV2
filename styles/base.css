@@ -1,0 +1,65 @@
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+html, body {
+  scroll-behavior: auto;
+}
+body {
+  background: #FF9A9E;
+  font-family: 'Comic Neue', cursive, sans-serif;
+  color: #333;
+  overflow-x: hidden;
+  position: relastive;
+  min-width: 360px;
+}
+body::before {
+  content: "";
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: url("https://img.freepik.com/premium-vector/vector-seamless-pattern-colored-baguette-bread_505913-3518.jpg") repeat;
+  opacity: 0.3;
+  z-index: -1;
+}
+#skip-text {
+  position: fixed;
+  top: 10px;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 1rem;
+  color: #fff;
+  background: rgba(0, 0, 0, 0.5);
+  padding: 5px 10px;
+  border-radius: 5px;
+  z-index: 1000;
+}
+.container {
+  display: flex;
+  justify-content: space-between;
+  align-items: flex-start;
+  max-width: 1200px;
+  margin: 40px auto 0;
+  padding: 40px 20px;
+  gap: 40px;
+  visibility: hidden;
+}
+.logo {
+  width: 70px;
+  margin: 20px;
+  transition: transform 0.3s ease;
+}
+.logo:hover {
+  transform: scale(1.1);
+}
+@media (max-width: 768px) {
+  .container {
+    flex-direction: column;
+    align-items: center;
+    margin-top: 20px;
+    padding: 20px;
+  }
+}
