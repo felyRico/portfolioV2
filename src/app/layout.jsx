@@ -5,7 +5,7 @@ import '../../styles/base.css'
 import '../../styles/hero.css'
 import '../../styles/about.css'
 import '../../styles/skills.css'
-import '../../styles/projects.css'
+import '../../styles/artspace.css'
 import '../../styles/contacts.css'
 
 import Head from 'next/head'
